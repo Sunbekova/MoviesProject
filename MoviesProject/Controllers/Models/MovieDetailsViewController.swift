@@ -1,12 +1,10 @@
-//
-//  MovieDetailsViewController.swift
-//  MoviesProject
-//
-//  Created by Aisha Suanbekova Bakytjankyzy on 26.12.2024.
-//
-
 import UIKit
-import AVKit
+import Kingfisher
+import WebKit
+
+protocol MovieDetailsViewControllerDelegate: AnyObject {
+    func didAddMovieToFavorites(_ movie: Title)
+}
 
 class MovieDetailsViewController: UIViewController {
 
@@ -15,10 +13,11 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet weak var releaseDateLabel: UILabel!
     @IBOutlet weak var overviewLabel: UILabel!
     @IBOutlet weak var ratingLabel: UILabel!
-    @IBOutlet weak var playTrailerButton: UIButton!
-
-    var selectedMovie: Title? // The movie passed from the previous screen
-    private var trailerURL: URL?
+    @IBOutlet weak var webView: WKWebView!
+    
+    var favoriteMovies = [Title]()
+    weak var delegate: MovieDetailsViewControllerDelegate?
+    var selectedMovie: Title?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,41 +42,79 @@ class MovieDetailsViewController: UIViewController {
             posterImageView.image = UIImage(systemName: "photo.artframe") // Placeholder
         }
 
-        // Hide trailer button initially
-        playTrailerButton.isHidden = true
+        // Hide trailer initially
+        webView.isHidden = true
     }
 
-    private func fetchTrailer() {
-        guard let movie = selectedMovie, let title = movie.original_title else { return }
+    @IBAction func addToFavoritesButtonTapped(_ sender: UIButton) {
+        guard let movie = selectedMovie else { return }
 
-        APICaller.shared.getMovie(with: title + " trailer") { [weak self] result in
-            switch result {
-            case .success(let videoElement):
-                DispatchQueue.main.async {
-                    let videoID = videoElement.id.videoId
-                    self?.trailerURL = URL(string: "https://www.youtube.com/watch?v=\(videoID)")
-                    self?.playTrailerButton.isHidden = false // Show the trailer button
+        // Проверка, не был ли фильм уже добавлен в избранное
+        var allFavoriteMovies = loadFavoriteMovies()
+        if allFavoriteMovies.contains(where: { $0.id == movie.id }) {
+            print("Фильм уже в избранных!")
+            return
+        }
+
+        addMovieToFavorites(movie)
+
+        let alert = UIAlertController(title: "Добавлено в избранное", message: "Фильм добавлен в избранные!", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+
+        loadFavoriteMovies() // Обновляем список избранных фильмов после добавления
+    }
+
+    func addMovieToFavorites(_ movie: Title) {
+        delegate?.didAddMovieToFavorites(movie)
+
+        // Сохраняем избранные фильмы в UserDefaults
+        var allFavoriteMovies = loadFavoriteMovies()
+        allFavoriteMovies.append(movie)
+
+        let encoder = JSONEncoder()
+        do {
+            let encoded = try encoder.encode(allFavoriteMovies)
+            UserDefaults.standard.set(encoded, forKey: "FavoriteMovies")
+            print("Фильм добавлен в избранное") // Логируем успешное добавление
+        } catch {
+            print("Ошибка при кодировании фильма: \(error.localizedDescription)")
+        }
+    }
+
+    private func loadFavoriteMovies() -> [Title] {
+        if let savedMovies = UserDefaults.standard.data(forKey: "FavoriteMovies") {
+            let decoder = JSONDecoder()
+            do {
+                let loadedMovies = try decoder.decode([Title].self, from: savedMovies)
+                favoriteMovies = loadedMovies
+                print("Избранные фильмы загружены: \(favoriteMovies)")
+            } catch {
+                print("Ошибка при загрузке фильмов: \(error.localizedDescription)")
+            }
+        } else {
+            print("Нет сохраненных избранных фильмов.")
+        }
+        return favoriteMovies
+    }
+    
+    private func fetchTrailer() {
+            guard let movie = selectedMovie, let title = movie.original_title else { return }
+
+            APICaller.shared.getMovie(with: title + " trailer") { [weak self] result in
+                switch result {
+                case .success(let videoElement):
+                    DispatchQueue.main.async {
+                        let videoID = videoElement.id.videoId
+                        let embedHTML = """
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/\(videoID)" frameborder="0" allowfullscreen></iframe>
+                        """
+                        self?.webView.loadHTMLString(embedHTML, baseURL: nil)
+                        self?.webView.isHidden = false
+                    }
+                case .failure(let error):
+                    print("Failed to fetch YouTube trailer: \(error.localizedDescription)")
                 }
-            case .failure(let error):
-                print("Failed to fetch YouTube trailer: \(error.localizedDescription)")
             }
         }
-    }
-
-    @IBAction func playTrailerButtonTapped(_ sender: UIButton) {
-        guard let trailerURL = trailerURL else { return }
-        
-        // Convert the YouTube link to an embeddable format
-        let embeddableURLString = trailerURL.absoluteString.replacingOccurrences(of: "watch?v=", with: "embed/")
-        guard let embeddableURL = URL(string: embeddableURLString) else { return }
-
-        // Play video using AVPlayerViewController
-        let player = AVPlayer(url: embeddableURL)
-        let playerViewController = AVPlayerViewController()
-        playerViewController.player = player
-
-        present(playerViewController, animated: true) {
-            player.play()
-        }
-    }
 }
