@@ -9,7 +9,7 @@ The app features a modern, intuitive interface, making movie exploration both se
 
 ****
 
-Code source available on GitHub: [MoviesProject](https://github.com/YourGitHubUsername/MoviesProject)
+Code source available on GitHub: [MoviesProject](https://github.com/Sunbekova/MoviesProject)
 
 About the App:  
 The MoviesWave app connects to The Movie Database (TMDb) and YouTube API, offering users real-time information on movies and trailers. Users can view details such as the movie's title, release date, rating, and overview while enjoying smooth transitions between screens.
