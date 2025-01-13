@@ -181,7 +181,7 @@
                         <outlet property="ratingLabel" destination="EMo-Za-68l" id="VGV-lb-Psg"/>
                         <outlet property="releaseDateLabel" destination="ed5-Ln-sC4" id="0zp-RW-Ivo"/>
                         <outlet property="titleLabel" destination="IaH-lv-wlN" id="MY9-lV-KhV"/>
-                        <outlet property="webView" destination="Drb-bZ-RT4" id="5Or-BN-seH"/>
+                        <outlet property="trailerWebView" destination="Drb-bZ-RT4" id="nXu-Dn-de5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KtG-2N-5ov" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

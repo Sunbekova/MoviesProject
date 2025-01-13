@@ -13,7 +13,7 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet weak var releaseDateLabel: UILabel!
     @IBOutlet weak var overviewLabel: UILabel!
     @IBOutlet weak var ratingLabel: UILabel!
-    @IBOutlet weak var webView: WKWebView!
+    @IBOutlet weak var trailerWebView: WKWebView!
     
     var favoriteMovies = [Title]()
     weak var delegate: MovieDetailsViewControllerDelegate?
@@ -43,7 +43,7 @@ class MovieDetailsViewController: UIViewController {
         }
 
         // Hide trailer initially
-        webView.isHidden = true
+        trailerWebView.isHidden = true
     }
 
     @IBAction func addToFavoritesButtonTapped(_ sender: UIButton) {
@@ -109,8 +109,8 @@ class MovieDetailsViewController: UIViewController {
                         let embedHTML = """
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/\(videoID)" frameborder="0" allowfullscreen></iframe>
                         """
-                        self?.webView.loadHTMLString(embedHTML, baseURL: nil)
-                        self?.webView.isHidden = false
+                        self?.trailerWebView.loadHTMLString(embedHTML, baseURL: nil)
+                        self?.trailerWebView.isHidden = false
                     }
                 case .failure(let error):
                     print("Failed to fetch YouTube trailer: \(error.localizedDescription)")
