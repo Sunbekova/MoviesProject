@@ -68,19 +68,22 @@ The project emphasizes simplicity and functionality while providing a smooth use
 
 # Database Integration
 
-The app uses **UserDefaults** for local data persistence.  
-This allows users to save and manage their favorite movies even after closing and reopening the app.
+## Why We Used UserDefaults
 
-| Feature | Description |
-|---------|-------------|
-| Save to Favorites | Users can add movies to their Favorites list, stored using UserDefaults. |
-| Remove from Favorites | Users can remove movies from their Favorites list. |
-| Persistent Storage | Favorites are saved locally and persist between app launches. |
+We implemented **UserDefaults** for storing favorite movies due to its simplicity and efficiency for small data storage. UserDefaults is well-suited for:
+- **Lightweight Data Storage:** Ideal for saving user preferences like movie IDs and titles.  
+- **Persistence:** Ensures user favorites are saved even after the app is closed and reopened.  
+- **Ease of Implementation:** Quick to set up without complex configurations.  
 
-> **Note:** UserDefaults is efficient for lightweight storage like saving favorite movie IDs and titles.  
-> For more complex data handling, integrating Core Data or Realm could be considered in future updates.
+For more complex data handling in future updates, integrating Core Data or Realm could be explored.
 
-[Go to top](#movies-app)
+## How We Used UserDefaults
+
+| Feature                | Description                                                   |
+|-----------------------|---------------------------------------------------------------|
+| **Save to Favorites**  | Users can add movies to their Favorites list.                |
+| **Remove from Favorites** | Users can remove movies from their Favorites list.        |
+| **Persistent Storage** | Favorites are saved locally and persist between app launches.|
 
 
 # Project Preview
