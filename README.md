@@ -75,8 +75,6 @@ We implemented **UserDefaults** for storing favorite movies due to its simplicit
 - **Persistence:** Ensures user favorites are saved even after the app is closed and reopened.  
 - **Ease of Implementation:** Quick to set up without complex configurations.  
 
-For more complex data handling in future updates, integrating Core Data or Realm could be explored.
-
 ## How We Used UserDefaults
 
 | Feature                | Description                                                   |
