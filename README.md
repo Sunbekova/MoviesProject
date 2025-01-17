@@ -19,9 +19,10 @@ The MoviesWave app connects to The Movie Database (TMDb) and YouTube API, offeri
 1. [Technical Topics](#topics)
 2. [App Source](#app-source)
 3. [Basic Information about the App](#app-description)
-4. [Project Preview](#project-preview)
-5. [Project Members](#project-members)
-6. [Topics Covered at This Time](#used-topics-at-this-time)
+4. [Database Integration](#database-integration)
+5. [Project Preview](#project-preview)
+6. [Project Members](#project-members)
+7. [Topics Covered at This Time](#used-topics-at-this-time)
 
 
 # Topics
@@ -33,6 +34,7 @@ The MoviesWave app connects to The Movie Database (TMDb) and YouTube API, offeri
 | JSON Parsing |
 | AVPlayer for Video Playback |
 | WebKit for Embedded Trailers |
+| UserDefaults for Data Persistence |
 
 
 # App Source
@@ -40,9 +42,11 @@ Explore trending movies, search for your favorites, and watch trailers.
 
 | Navigation | Description |
 |------------|-------------|
-|  Trending Movies  | Discover popular movies updated daily    |
-|  Search Movies  | Search for movies by name    |
-|  Movie Details  | View detailed information about a movie and its trailer    |
+| Trending Movies | Discover popular movies updated daily |
+| Search Movies | Search for movies by name |
+| Movie Details | View detailed information about a movie and its trailer |
+| Favorites | Save favorite movies for later viewing |
+
 
 APIs used:
 - TMDb API: [https://www.themoviedb.org/](https://www.themoviedb.org/)
@@ -56,8 +60,25 @@ The app offers a sleek design that enables users to:
 - Access detailed information about each movie, including title, release date, rating, and an overview.
 - Watch embedded trailers directly via the WebKit-based YouTube integration.
 - Search for movies quickly and efficiently.
+- Save favorite movies for quick access later.
 
 The project emphasizes simplicity and functionality while providing a smooth user experience powered by modern iOS development techniques.
+
+[Go to top](#movies-app)
+
+# Database Integration
+
+The app uses **UserDefaults** for local data persistence.  
+This allows users to save and manage their favorite movies even after closing and reopening the app.
+
+| Feature | Description |
+|---------|-------------|
+| Save to Favorites | Users can add movies to their Favorites list, stored using UserDefaults. |
+| Remove from Favorites | Users can remove movies from their Favorites list. |
+| Persistent Storage | Favorites are saved locally and persist between app launches. |
+
+> **Note:** UserDefaults is efficient for lightweight storage like saving favorite movie IDs and titles.  
+> For more complex data handling, integrating Core Data or Realm could be considered in future updates.
 
 [Go to top](#movies-app)
 
@@ -95,14 +116,15 @@ https://www.youtube.com/embed/dummyID
 
 # Used Topics at This Time
 
-| Technical Side | Topics Covered |
-|----------------|----------------|
-| MVC Architecture | ✓ |
+| Technical Side             | Topics Covered |
+|----------------------------|----------------|
+| MVC Architecture           | ✓ |
 | Networking with URLSession | ✓ |
-| JSON Parsing | ✓ |
-| TMDb API | ✓ |
-| YouTube API | ✓ |
-| AVPlayer for Trailers | ✓ |
-| WebKit Integration | ✓ |
+| JSON Parsing               | ✓ |
+| TMDb API                   | ✓ |
+| YouTube API                | ✓ |
+| AVPlayer for Trailers      | ✓ |
+| WebKit Integration         | ✓ |
+| UserDefaults for Persistence | ✓ |
 
 [Go to top](#movies-app)
